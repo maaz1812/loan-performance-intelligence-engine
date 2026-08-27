@@ -21,7 +21,11 @@ class ReviewerCopilot:
         self.rules = {}
         if self.rules_path.exists():
             with open(self.rules_path, "r") as f:
-                self.rules = json.load(f).get("rules", {})
+                rules_list = json.load(f).get("rules", [])
+                if isinstance(rules_list, list):
+                    self.rules = {r.get("id"): r for r in rules_list if "id" in r}
+                else:
+                    self.rules = rules_list
                 
         self.data_dict = ""
         if self.dict_path.exists():
