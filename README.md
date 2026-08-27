@@ -323,7 +323,7 @@ services:
 
 ## 🔌 API Reference
 
-**Base URL:** `http://localhost:8000/api/v1` | **Auth:** Bearer JWT
+**Base URL:** `https://loan-performance-intelligence-engine.onrender.com/api/v1` | **Auth:** Bearer JWT
 
 | Method | Endpoint | Description |
 |---|---|---|
