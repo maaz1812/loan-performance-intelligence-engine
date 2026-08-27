@@ -1,0 +1,45 @@
+=== Phase 2 ingestion: streaming 16 archives (no extraction) ===
+[ok] 2020Q3   rows=  73,790,598 kept= 2,238,649 loans=  41,997  1069.3s   69,007/s
+[ok] 2021Q1   rows=  76,792,155 kept= 2,295,885 loans=  42,290  1113.2s   68,986/s
+[ok] 2020Q4   rows=  83,424,229 kept= 2,497,847 loans=  45,319  1202.2s   69,391/s
+[ok] 2021Q3   rows=  52,671,021 kept= 1,575,333 loans=  31,055   753.5s   69,901/s
+[ok] 2020Q2   rows=  59,460,834 kept= 1,776,947 loans=  36,962   845.5s   70,324/s
+[ok] 2021Q2   rows=  68,927,280 kept= 2,061,803 loans=  39,374   974.8s   70,711/s
+[ok] 2019Q4   rows=  28,258,138 kept=   857,905 loans=  20,991   551.4s   51,249/s
+[ok] 2020Q1   rows=  27,521,067 kept=   826,767 loans=  20,410   606.5s   45,377/s
+[ok] 2021Q4   rows=  49,384,286 kept= 1,472,233 loans=  30,224  1071.9s   46,071/s
+[ok] 2019Q3   rows=  26,157,996 kept=   782,546 loans=  20,151   652.4s   40,097/s
+[ok] 2018Q1   rows=  23,563,399 kept=   701,762 loans=  13,700   560.7s   42,024/s
+[ok] 2018Q3   rows=  20,051,060 kept=   605,798 loans=  15,114   465.1s   43,115/s
+[ok] 2018Q4   rows=  15,625,256 kept=   461,818 loans=  12,514   362.7s   43,084/s
+[skip] 2019Q1   rows=  11,774,637 kept=   355,272 loans=  10,389   126.1s   93,390/s
+[ok] 2018Q2   rows=  20,039,943 kept=   606,336 loans=  13,619   457.4s   43,816/s
+[ok] 2019Q2   rows=  14,386,501 kept=   438,609 loans=  12,358   326.3s   44,088/s
+{
+  "files": 16,
+  "ok": 16,
+  "failed": [],
+  "rows_total": 651828400,
+  "rows_kept": 19555510,
+  "loans_kept": 406467,
+  "wall_seconds": 3821.5,
+  "sample_rate_target": 0.03,
+  "config_version": "1.0.0",
+  "schema_version": "fnma_sf_llp_113col_v1"
+}
+=== combining shards ===
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\DELL\Desktop\INTAIN_MAAZ\ml\data_pipeline\dataset_builder.py", line 371, in <module>
+    print(json.dumps(combine_shards(), indent=2), flush=True)
+                     ^^^^^^^^^^^^^^^^
+  File "C:\Users\DELL\Desktop\INTAIN_MAAZ\ml\data_pipeline\dataset_builder.py", line 339, in combine_shards
+    for batch in pf.iter_batches(batch_size=250_000):
+  File "pyarrow/_parquet.pyx", line 1777, in iter_batches
+    check_status(
+  File "pyarrow/error.pxi", line 92, in pyarrow.lib.check_status
+    raise convert_status(status)
+OSError: Couldn't deserialize thrift: invalid TType
+Deserializing page header failed.
+

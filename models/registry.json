@@ -1,0 +1,165 @@
+{
+  "models": {
+    "delinquency_3m_model": {
+      "versions": {
+        "v1": {
+          "stage": "staging",
+          "algorithm": "logistic_regression",
+          "created_at": "2026-08-27T15:20:04+00:00",
+          "target": "next_3m_delinquency_flag",
+          "key_metric": 0.42807869527571024
+        },
+        "v2": {
+          "stage": "staging",
+          "algorithm": "random_forest",
+          "created_at": "2026-08-27T15:20:34+00:00",
+          "target": "next_3m_delinquency_flag",
+          "key_metric": 0.6057524088901224
+        },
+        "v3": {
+          "stage": "staging",
+          "algorithm": "xgboost",
+          "created_at": "2026-08-27T15:20:48+00:00",
+          "target": "next_3m_delinquency_flag",
+          "key_metric": 0.5730667483035241
+        },
+        "v4": {
+          "stage": "staging",
+          "algorithm": "lightgbm",
+          "created_at": "2026-08-27T15:20:59+00:00",
+          "target": "next_3m_delinquency_flag",
+          "key_metric": 0.6033500950476559
+        }
+      },
+      "stages": {
+        "staging": "v1"
+      }
+    },
+    "delinquency_6m_model": {
+      "versions": {
+        "v1": {
+          "stage": "staging",
+          "algorithm": "logistic_regression",
+          "created_at": "2026-08-27T15:23:09+00:00",
+          "target": "next_6m_delinquency_flag",
+          "key_metric": 0.38529254479031605
+        },
+        "v2": {
+          "stage": "staging",
+          "algorithm": "random_forest",
+          "created_at": "2026-08-27T15:23:37+00:00",
+          "target": "next_6m_delinquency_flag",
+          "key_metric": 0.5658275179999205
+        },
+        "v3": {
+          "stage": "staging",
+          "algorithm": "xgboost",
+          "created_at": "2026-08-27T15:23:51+00:00",
+          "target": "next_6m_delinquency_flag",
+          "key_metric": 0.48819631677327513
+        },
+        "v4": {
+          "stage": "staging",
+          "algorithm": "lightgbm",
+          "created_at": "2026-08-27T15:24:02+00:00",
+          "target": "next_6m_delinquency_flag",
+          "key_metric": 0.5210541409404662
+        }
+      },
+      "stages": {
+        "staging": "v1"
+      }
+    },
+    "default_model": {
+      "versions": {
+        "v1": {
+          "stage": "staging",
+          "algorithm": "logistic_regression",
+          "created_at": "2026-08-27T15:26:13+00:00",
+          "target": "next_12m_default_flag",
+          "key_metric": 0.0074017571931925315
+        },
+        "v2": {
+          "stage": "staging",
+          "algorithm": "random_forest",
+          "created_at": "2026-08-27T15:26:36+00:00",
+          "target": "next_12m_default_flag",
+          "key_metric": 0.4886102666602437
+        },
+        "v3": {
+          "stage": "staging",
+          "algorithm": "xgboost",
+          "created_at": "2026-08-27T15:26:50+00:00",
+          "target": "next_12m_default_flag",
+          "key_metric": 0.4081466539858146
+        },
+        "v4": {
+          "stage": "staging",
+          "algorithm": "lightgbm",
+          "created_at": "2026-08-27T15:27:02+00:00",
+          "target": "next_12m_default_flag",
+          "key_metric": 0.4589306153879267
+        }
+      },
+      "stages": {
+        "staging": "v1"
+      }
+    },
+    "prepayment_model": {
+      "versions": {
+        "v1": {
+          "stage": "staging",
+          "algorithm": "logistic_regression",
+          "created_at": "2026-08-27T15:30:45+00:00",
+          "target": "next_12m_prepayment_flag",
+          "key_metric": 0.04903569566562869
+        },
+        "v2": {
+          "stage": "staging",
+          "algorithm": "random_forest",
+          "created_at": "2026-08-27T15:31:12+00:00",
+          "target": "next_12m_prepayment_flag",
+          "key_metric": 0.05002254159647205
+        },
+        "v3": {
+          "stage": "staging",
+          "algorithm": "xgboost",
+          "created_at": "2026-08-27T15:31:28+00:00",
+          "target": "next_12m_prepayment_flag",
+          "key_metric": 0.050356061602802926
+        },
+        "v4": {
+          "stage": "staging",
+          "algorithm": "lightgbm",
+          "created_at": "2026-08-27T15:31:39+00:00",
+          "target": "next_12m_prepayment_flag",
+          "key_metric": 0.04963796600406822
+        }
+      },
+      "stages": {
+        "staging": "v1"
+      }
+    },
+    "next_state_model": {
+      "versions": {
+        "v1": {
+          "stage": "staging",
+          "algorithm": "logistic_regression",
+          "created_at": "2026-08-27T15:34:14+00:00",
+          "target": "next_state",
+          "key_metric": null
+        },
+        "v2": {
+          "stage": "staging",
+          "algorithm": "lightgbm",
+          "created_at": "2026-08-27T15:34:55+00:00",
+          "target": "next_state",
+          "key_metric": null
+        }
+      },
+      "stages": {
+        "staging": "v1"
+      }
+    }
+  }
+}

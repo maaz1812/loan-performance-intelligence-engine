@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+.claude/
+.pytest_cache/
+
+# Data / Heavy Files
+# We do NOT push raw zip datasets or massive parquet splits
+data/
+**/*.parquet
+**/*.zip
+
+# (Note: We ARE pushing the `models/` folder because it's only ~28MB and allows judges to run the API without retraining)
