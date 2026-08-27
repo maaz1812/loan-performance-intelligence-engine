@@ -35,27 +35,55 @@ copilot = ReviewerCopilot()
 def health_check():
     return {"status": "ok", "models_loaded": len(simulator.models)}
 
+import json
+
+# Cache the submission file globally so we don't read it on every request
+submission_df = None
+def get_submission_data():
+    global submission_df
+    if submission_df is None:
+        sub_path = os.path.join(os.path.dirname(__file__), '../../submission/submission.csv')
+        if os.path.exists(sub_path):
+            submission_df = pd.read_csv(sub_path, dtype={'loan_id': str})
+            submission_df.set_index('loan_id', inplace=True)
+    return submission_df
+
 @app.post("/api/v1/predict", response_model=PredictionResponse)
 def predict_loan(req: PredictionRequest):
     """
-    Mock prediction endpoint for a single loan.
-    In reality, this would construct a dataframe, run through the XGBoost model,
-    check anomaly scores, and trigger the copilot.
+    Returns the pre-computed predictions for a loan from the submission file.
     """
-    # Generate dummy probabilities for now since live inference requires the full feature pipeline
-    # which is quite heavy for a single REST call without a proper feature store.
+    df = get_submission_data()
     
+    # Default fallback values
     preds = {
         "next_3m_delinquency_prob": 0.15,
         "next_12m_default_prob": 0.05,
         "next_12m_prepayment_prob": 0.20
     }
+    anomalies = {"is_anomaly": False, "rule_violations": []}
     
-    anomalies = {
-        "is_anomaly": False,
-        "rule_violations": []
-    }
-    
+    if df is not None and req.loan_id in df.index:
+        row = df.loc[req.loan_id]
+        if isinstance(row, pd.DataFrame):
+            row = row.iloc[0] # handle duplicates if any
+            
+        try:
+            # Parse the JSON probabilities string
+            probs = json.loads(row['probabilities'])
+            preds["next_3m_delinquency_prob"] = probs.get("next_3m_delinquency_flag", 0.0)
+            preds["next_12m_default_prob"] = probs.get("next_12m_default_flag", 0.0)
+            preds["next_12m_prepayment_prob"] = probs.get("next_12m_prepayment_flag", 0.0)
+            
+            # Anomaly logic
+            anomaly_score = float(row.get('anomaly_score', 0))
+            is_anomaly = anomaly_score > 0.5 or str(row.get('action', '')) == 'Review'
+            anomalies["is_anomaly"] = is_anomaly
+            if is_anomaly:
+                anomalies["rule_violations"] = [f"High risk drivers: {row.get('drivers', '[]')}"]
+        except Exception as e:
+            print(f"Error parsing submission row: {e}")
+
     summary = copilot.generate_summary(req.loan_id, preds, anomalies, req.features)
     
     return PredictionResponse(
