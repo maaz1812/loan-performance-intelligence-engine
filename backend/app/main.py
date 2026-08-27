@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 
-from app.models.schemas import PredictionRequest, PredictionResponse, ScenarioRequest, ScenarioResponse
+from backend.app.models.schemas import PredictionRequest, PredictionResponse, ScenarioRequest, ScenarioResponse
 import sys
 import os
 
