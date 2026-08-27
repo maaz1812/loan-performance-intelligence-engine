@@ -1,0 +1,127 @@
+{
+  "_meta": {
+    "file": "validation_rules.json",
+    "status": "GENERATED - synthetic supporting dataset",
+    "authorised_by": "dataset_usage.md Section 13.2",
+    "description": "Machine-readable deterministic data-quality rules applied uniformly across ingestion, data-quality scoring and anomaly detection. Defined once here and reused everywhere.",
+    "config_version": "1.0.0",
+    "n_rules": 13,
+    "severity_semantics": {
+      "hard": "structurally impossible state; quarantines the record",
+      "soft": "suspicious but possibly legitimate; flags for review only"
+    }
+  },
+  "thresholds": {
+    "delinquency_dlq_months": 1,
+    "default_dlq_months": 6,
+    "stale_months_threshold": 6,
+    "flapping_transitions_threshold": 3,
+    "balance_drop_pct_threshold": 40.0
+  },
+  "rules": [
+    {
+      "id": "R001",
+      "exception_type": "balance_inconsistency",
+      "severity": "hard",
+      "description": "current_balance exceeds original_balance, which is impossible under standard amortisation without a documented modification",
+      "reason_template": "current_balance {current_balance:,.2f} exceeds original_balance {original_balance:,.2f} with no modification_flag",
+      "weight": 25.0
+    },
+    {
+      "id": "R002",
+      "exception_type": "balance_increase",
+      "severity": "soft",
+      "description": "current_balance increased month-over-month without a modification flag",
+      "reason_template": "current_balance rose by {balance_delta:,.2f} versus the prior month without a modification_flag",
+      "weight": 15.0
+    },
+    {
+      "id": "R003",
+      "exception_type": "date_conflict",
+      "severity": "hard",
+      "description": "reporting_month precedes origination_month",
+      "reason_template": "reporting_month {reporting_month} precedes origination_month {origination_month}",
+      "weight": 25.0
+    },
+    {
+      "id": "R004",
+      "exception_type": "delinquency_status_mismatch",
+      "severity": "hard",
+      "description": "days_past_due is zero while current_status is Delinquent, or non-zero while status is Current",
+      "reason_template": "current_status '{current_status}' is inconsistent with days_past_due {days_past_due:.0f}",
+      "weight": 20.0
+    },
+    {
+      "id": "R005",
+      "exception_type": "negative_value",
+      "severity": "hard",
+      "description": "a balance or term field is negative",
+      "reason_template": "negative value detected: current_balance={current_balance:,.2f}, remaining_term_months={remaining_term_months}",
+      "weight": 25.0
+    },
+    {
+      "id": "R006",
+      "exception_type": "stale_update",
+      "severity": "soft",
+      "description": "the loan's reported balance has not changed for 6 or more consecutive months while the loan is active and interest-bearing",
+      "reason_template": "balance unchanged for {stale_months:.0f} consecutive months while status is '{current_status}'",
+      "weight": 10.0
+    },
+    {
+      "id": "R007",
+      "exception_type": "status_flapping",
+      "severity": "soft",
+      "description": "the loan alternated between Current and Delinquent three or more times within a rolling 12-month window",
+      "reason_template": "status changed {n_transitions:.0f} times in the trailing 12 months, indicating unstable servicer reporting",
+      "weight": 10.0
+    },
+    {
+      "id": "R008",
+      "exception_type": "missing_status",
+      "severity": "soft",
+      "description": "the servicer did not report a delinquency status (DLQ_STATUS = 'XX' or blank) on an active loan",
+      "reason_template": "delinquency status was not reported by the servicer for this month",
+      "weight": 8.0
+    },
+    {
+      "id": "R009",
+      "exception_type": "impossible_term",
+      "severity": "hard",
+      "description": "remaining_term_months exceeds the original loan term",
+      "reason_template": "remaining_term_months {remaining_term_months} exceeds original_term_months {original_term_months}",
+      "weight": 20.0
+    },
+    {
+      "id": "R010",
+      "exception_type": "post_termination_activity",
+      "severity": "hard",
+      "description": "a performance record exists for a month after the loan reached a terminal zero-balance state",
+      "reason_template": "record dated {reporting_month} occurs after termination on {zero_balance_date}",
+      "weight": 25.0
+    },
+    {
+      "id": "R011",
+      "exception_type": "amortisation_anomaly",
+      "severity": "soft",
+      "description": "the balance fell by more than 40% in a single month without the loan terminating, which is inconsistent with scheduled amortisation",
+      "reason_template": "balance fell {balance_drop_pct:.1f}% in one month without a zero-balance termination",
+      "weight": 12.0
+    },
+    {
+      "id": "R012",
+      "exception_type": "source_conflict",
+      "severity": "soft",
+      "description": "the secondary servicer feed reports a different status or balance than the primary performance record for the same loan-month",
+      "reason_template": "servicer_updates reports status '{conflict_status}' versus primary '{current_status}'",
+      "weight": 18.0
+    },
+    {
+      "id": "R013",
+      "exception_type": "document_gap",
+      "severity": "soft",
+      "description": "a month is missing from the loan's otherwise continuous monthly reporting sequence",
+      "reason_template": "gap of {gap_months:.0f} months detected in the monthly reporting sequence",
+      "weight": 10.0
+    }
+  ]
+}

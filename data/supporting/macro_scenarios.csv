@@ -1,0 +1,10 @@
+# GENERATED SYNTHETIC DATASET - macro_scenarios.csv
+# Authorised by dataset_usage.md Section 13.3 (Supporting Synthetic Datasets).
+# NOT delivered source data. Purpose: supplies the quantitative stress
+# assumptions parameterising the base / adverse_credit / high_prepayment
+# scenarios described in dataset_usage.md Section 12.
+# config_version=1.0.0
+scenario_name,description,unemployment_shift_bps,hpi_shock_pct,rate_shift_bps,delinquency_multiplier,default_multiplier,prepayment_multiplier,dpd_stress_months,ltv_stress_pct,rationale
+base,Current observed conditions; no macro adjustment applied. Reference point for comparison.,0,0.0,0,1.0,1.0,1.0,0.0,0.0,Baseline: models scored on unmodified current feature distributions.
+adverse_credit,"Stressed credit environment: rising unemployment, falling house prices, elevated payment stress.",300,-15.0,100,2.1,2.6,0.65,1.0,15.0,"Calibrated to the 2020 stress episode observed in this dataset's own population aggregates; a -15% HPI shock raises effective LTV by ~15pp, and prepayment falls as refinancing becomes uneconomic for stressed borrowers."
+high_prepayment,Falling-rate environment driving a refinance wave and accelerated loan closure.,-50,6.0,-150,0.85,0.75,2.4,0.0,-6.0,"Calibrated to the 2020-2021 refinance wave; a 150bp rate decline makes refinancing attractive for most seasoned loans, concentrated in high-rate/high-credit segments."
