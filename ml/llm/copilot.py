@@ -40,26 +40,24 @@ class ReviewerCopilot:
         triggered_rules = anomalies.get("rule_violations", [])
         rule_texts = [f"{r}: {self.rules.get(r, {}).get('description', 'Unknown rule')}" for r in triggered_rules]
         
-        # 2. Construct the context prompt
-        context = f"""
-        Loan ID: {loan_id}
-        Predictions:
-        - Delinquency (3m): {predictions.get('next_3m_delinquency_prob', 0):.1%}
-        - Default (12m): {predictions.get('next_12m_default_prob', 0):.1%}
-        - Prepayment (12m): {predictions.get('next_12m_prepayment_prob', 0):.1%}
-        
-        Anomaly Flags: {anomalies.get('is_anomaly', False)}
-        Rule Violations: {', '.join(rule_texts) if rule_texts else 'None'}
-        """
-        
+        # 2. Parse Drivers
+        drivers = []
+        try:
+            drivers = json.loads(anomalies.get("drivers", "[]"))
+        except:
+            pass
+            
         # 3. Dummy LLM Response (To avoid needing an API key in CI/CD)
         # A real implementation would invoke ChatOpenAI here.
         summary = (
             f"Reviewer Summary for Loan {loan_id}:\n"
             f"This loan has a default probability of {predictions.get('next_12m_default_prob', 0):.1%}. "
         )
+        
         if anomalies.get("is_anomaly"):
             summary += f"\nWarning: The anomaly detector flagged this record. "
+            if drivers:
+                summary += f"High risk drivers: {', '.join(drivers)}. "
             if rule_texts:
                 summary += f"Specific rule violations found: {', '.join(rule_texts)}."
         else:

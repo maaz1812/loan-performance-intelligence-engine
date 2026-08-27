@@ -80,7 +80,10 @@ def predict_loan(req: PredictionRequest):
             is_anomaly = anomaly_score > 0.5 or str(row.get('action', '')) == 'Review'
             anomalies["is_anomaly"] = is_anomaly
             if is_anomaly:
-                anomalies["rule_violations"] = [f"High risk drivers: {row.get('drivers', '[]')}"]
+                anomalies["drivers"] = row.get('drivers', '[]')
+                exception_type = str(row.get('exception_type', 'nan'))
+                if exception_type != 'nan':
+                    anomalies["rule_violations"] = [exception_type]
         except Exception as e:
             print(f"Error parsing submission row: {e}")
 
