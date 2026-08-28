@@ -13,19 +13,19 @@
 
 ### Agentic Debugging
 **Prompt:** "The FastAPI server is timing out on the /predict endpoint when I run the evaluation script. Fix the latency issue in the copilot endpoint and ensure the parser doesn't crash on unrecognized Rule IDs."
-**Output:** Accepted with modifications. The agent correctly identified that the ule_violations array was being overloaded with raw string data instead of rule IDs. It successfully refactored ackend/app/main.py to parse driver arrays cleanly.
+**Output:** Accepted with modifications. The agent correctly identified that the `rule_violations` array was being overloaded with raw string data instead of rule IDs. It successfully refactored `backend/app/main.py` to parse driver arrays cleanly.
 
 ## 3. Accepted vs. Rejected AI Outputs
 
-### ?? Rejected Output: Hallucinated Validation Rules
+### 🔴 Rejected Output: Hallucinated Validation Rules
 * **Issue:** Initially, the Copilot was prompted to "explain why a loan is risky." Without strict boundaries, the underlying model began hallucinating federal lending regulations and fake internal compliance rules.
-* **Correction (Human Review):** We strictly rejected this generative approach. We implemented a RAG (Retrieval-Augmented Generation) pattern, forcing the system to only read from data_dictionary.md and alidation_rules.json. If a rule wasn't in the JSON, it was instructed to output "Unknown rule." 
+* **Correction (Human Review):** We strictly rejected this generative approach. We implemented a RAG (Retrieval-Augmented Generation) pattern, forcing the system to only read from `data_dictionary.md` and `validation_rules.json`. If a rule wasn't in the JSON, it was instructed to output "Unknown rule." 
 
-### ?? Rejected Output: Random Row Splitting
-* **Issue:** When asked to scaffold the train/test split, the IDE defaulted to rom sklearn.model_selection import train_test_split, executing a random 80/20 row split.
+### 🔴 Rejected Output: Random Row Splitting
+* **Issue:** When asked to scaffold the train/test split, the IDE defaulted to `from sklearn.model_selection import train_test_split`, executing a random 80/20 row split.
 * **Correction (Human Review):** We rejected this code completely. Random splits on panel data leak future states of the same loan into the training set. We forced the system to rewrite the module using a strict **Time-Aware Calendar Split** (Train: <=2020, Val: 2021).
 
-### ?? Accepted Output: Frontend UI Generation
+### 🟢 Accepted Output: Frontend UI Generation
 * **Issue:** Building Recharts visualizations manually is time-consuming.
 * **Action:** Provided the IDE with the JSON schema of the API response and asked it to generate a Tailwind + React dashboard displaying Risk Probabilities. 
 * **Result:** Flawless generation of the visual interface, perfectly binding the probability metrics (3M DLQ, 12M Default, 12M Prepayment) to a unified bar chart.
