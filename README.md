@@ -56,6 +56,8 @@ LPIE treats **machine learning as the analytical core** and uses large language 
 
 **GitHub Repository:** [github.com/maaz1812/loan-performance-intelligence-engine](https://github.com/maaz1812/loan-performance-intelligence-engine)
 
+
+**▶️ 5-Minute Demo Video:** [Watch on Google Drive](https://drive.google.com/file/d/1u9pUibb7k34seDxQOTdx6QA2cej7fpKs/view?usp=drive_link)
 **Live Frontend Dashboard:** [https://loan-performance-intelligence-engine-ehah.onrender.com](https://loan-performance-intelligence-engine-ehah.onrender.com)
 **Live Backend API Base URL:** [https://loan-performance-intelligence-engine.onrender.com](https://loan-performance-intelligence-engine.onrender.com)
 
